@@ -1,1 +1,2 @@
 # praksaProjekat
+Projekat za praksu

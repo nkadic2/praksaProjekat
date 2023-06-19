@@ -2,11 +2,16 @@
 //import { required, email, minLength, sameAs } from '@vuelidate/validators'
 //import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 //import { VuelidatePlugin } from '@vuelidate/core';
+
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength, sameAs } from '@vuelidate/validators'
+
 export default {
   name:"RegistrationView",
-    /*data() {
+    data() {
         return {
             user: {
+              registration: [],
                 firstName: "",
                 lastName: "",
                 email: "",
@@ -21,7 +26,7 @@ export default {
             firstName: { required },
             lastName: { required },
             email: { required, email },
-            password: { required, minLength: minLength(8) },
+            password: { required, minLength: minLength(6) },
             confirmPassword: { required, sameAsPassword: sameAs('password') }
         }
     },
@@ -36,7 +41,7 @@ export default {
 
             alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.user));
         }
-    }*/
+    }
 }
 </script>
 
@@ -45,7 +50,7 @@ export default {
    <div class="w-full h-full max-w-xxxl">
     <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
       <div class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6" >
-          <form class=" mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+          <form @submit.prevent="handleSubmit" class="mt-1 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
             <p class="text-center text-lg font-medium">Registration</p>
             <div class="col-span-6 sm:col-span-3" >
               <label
@@ -69,6 +74,8 @@ export default {
               <input
                 type="text"
                 placeholder="Last name"
+
+                v-model="user.lastName" id="lastName" name="lastName" :class="{ 'is-invalid': submitted && $v.user.lastName.$error }"
                 class="w-full rounded-lg p-4 pe-12 text-sm shadow-sms border-2 border-slate-400"
               />
             </div>
@@ -78,9 +85,13 @@ export default {
               <input
                 type="email"
                 placeholder="Email"
+                v-model="user.email" id="email" name="email" :class="{ 'is-invalid': submitted && $v.user.email.$error }"
                 class="w-full rounded-lg p-4 pe-12 text-sm shadow-sms border-2 border-slate-400"
               />
-
+              <div v-if="submitted && $v.user.email.$error" class="invalid-feedback">
+                                    <span v-if="!$v.user.email.required">Email is required</span>
+                                    <span v-if="!$v.user.email.email">Email is invalid</span>
+                                </div>
             </div>
             <div class="col-span-6 sm:col-span-3">
               <label
@@ -93,7 +104,11 @@ export default {
                 placeholder="Password"
 
                 class="w-full rounded-lg p-4 pe-12 text-sm shadow-sms border-2 border-slate-400"
-                />
+                v-model="user.password" id="password" name="password" :class="{ 'is-invalid': submitted && $v.user.password.$error }" />
+                                <div v-if="submitted && $v.user.password.$error" class="invalid-feedback">
+                                    <span v-if="!$v.user.password.required">Password is required</span>
+                                    <span v-if="!$v.user.password.minLength">Password must be at least 6 characters</span>
+                                </div>
             </div>
             <div class="col-span-6 sm:col-span-3">
               <label
@@ -105,8 +120,13 @@ export default {
                 type="password"
                 placeholder="Password Confirmation"
 
-                class="w-full rounded-lg p-4 pe-12 text-sm shadow-sms border-2 border-slate-400"/>
-                         
+                class="w-full rounded-lg p-4 pe-12 text-sm shadow-sms border-2 border-slate-400"
+                v-model="user.confirmPassword" id="confirmPassword" name="confirmPassword" :class="{ 'is-invalid': submitted && $v.user.confirmPassword.$error }" />
+                                <div v-if="submitted && $v.user.confirmPassword.$error" class="invalid-feedback">
+                                    <span v-if="!$v.user.confirmPassword.required">Confirm Password is required</span>
+                                    <span v-else-if="!$v.user.confirmPassword.sameAsPassword">Passwords must match</span>
+                                </div>
+              <p v-if="errorMessage" style="color:red">{{ errorMessage }}</p>
             </div>
             <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
               <button

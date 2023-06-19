@@ -1,7 +1,11 @@
 <script>
+import axios from "axios";
+const baseURL = "http://localhost:3001/users";
+
 export default {
     data() {
     return {
+      users:[],
       loginEmail: '',
       loginPassword: '',
       isValidEmail: true,
@@ -16,12 +20,10 @@ export default {
       this.isValidPassword = this.validatePassword();
 
       if (this.isValidEmail && this.isValidPassword) {
-        // Proceed with login logic or API call
         console.log('Valid form');
       }
     },
     validateEmail() {
-      // Basic email validation
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return regex.test(this.loginEmail);
     },
@@ -30,7 +32,22 @@ export default {
       // Password should be at least 8 characters long
       return this.loginPassword.length >= 8;
     },
+    login() {
+      axios
+        .get(`http://localhost:3000/users?email=${this.loginEmail}&password=${this.loginPassword}`)
+        .then(response => {
+          // Handle successful login
+          console.log(response.data);
+        })
+        .catch(error => {
+          // Handle login error
+          console.error(error);
+        });
+    },
   },
+  mounted(){
+    
+  }
 }
 </script>
 
@@ -73,6 +90,7 @@ export default {
         </span>
       </div>
       <button
+      @click="login"
         type="submit"
         class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
       >
@@ -81,7 +99,7 @@ export default {
 
       <p class="text-center text-sm text-gray-500">
         No account?
-        <a class="underline" href="">Sign up</a>
+        <router-link to="/registration" class="text-gray-700 underline">Sign in</router-link>
       </p>
     </form>
   </div>

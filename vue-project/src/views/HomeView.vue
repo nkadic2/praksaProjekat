@@ -42,7 +42,6 @@ export default {
    mounted (){
     this.created()
     this.getAllMovies()
-    //this.goToDetailsPage();
   },
   methods: {
     refreshMovies(movies){
@@ -72,9 +71,6 @@ export default {
           this.errorMessage = "Error.";
         });
     },
-    /*goToDetailsPage() {
-      this.$router.push("/details");
-    },*/
   },
 };
 </script>

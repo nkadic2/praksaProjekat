@@ -22,14 +22,14 @@
   export default {
     props: ['movie'],
  
-   /* mounted (){
+    /*mounted (){
     this.goToDetailsPage();
-  },
+  },*/
   methods:{
     goToDetailsPage() {
-      this.$router.push("/details");
+      this.$router.push("/details/" + this.movie.id);
     }
-  }*/
+  }
 }
 </script>
 

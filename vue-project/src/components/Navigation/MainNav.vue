@@ -1,8 +1,18 @@
 <template>
-    <div class="fixed left-0 top-0 h-16 w-full bg-white text-lg">
-        <RouterLink to="/">Home</RouterLink> |
-        <RouterLink to="/login">Login</RouterLink> |
-        <RouterLink to="/registration">Registration</RouterLink>
-    </div>
-  <RouterView />
+    <div class="flex">
+  <!--     <router-link to="/">
+      <img src="@/assets/images/logo1.jpg" alt="" />
+    </router-link> -->
+      <ul class="flex mt-5">
+        <li>
+          <RouterLink to="/"> Home </RouterLink> |
+        </li>
+        <li>
+          <RouterLink to="/login"> Login </RouterLink> |
+        </li>
+        <li>
+          <RouterLink to="/registration"> Registration </RouterLink> 
+        </li>
+      </ul>
+      </div>
 </template>
